@@ -12,3 +12,6 @@ TREX_CFG=${TREX_CFG:-$SCRIPTPATH/trex_cfg.yaml}
 # Set PYTHONPATH.
 export PYTHONPATH=$TREX_CORE/trex_control_plane/interactive/trex/examples/stl:$PYTHONPATH
 export PYTHONPATH=$TREX_CORE/automation/trex_control_plane/interactive:$PYTHONPATH
+
+# Get input file.
+export TREX_INPUT_FILE=${1:-tcp_1pkt_rand.py}

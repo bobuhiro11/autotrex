@@ -49,7 +49,9 @@ def single_run(c, profile, mult, pkt_size):
 
 
 def run(c, pkt_size):
-    profile = STLProfile.load_py("./autotrex/tcp_1pkt.py", pkt_size=pkt_size)
+    profile = STLProfile.load_py(
+            os.path.join('./autotrex', str(os.getenv('TREX_INPUT_FILE'))),
+            pkt_size=pkt_size)
 
     ok = 1
     ng = 101
