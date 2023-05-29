@@ -25,5 +25,5 @@ jobs:
           sudo -E nohup ./serve.sh > serve.log 2>&1 &
           sleep 10
           cat serve.log
-          ./benchmark.py
+          python3 -m autotrex.benchmark
           sudo pkill serve.sh
