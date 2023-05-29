@@ -8,6 +8,7 @@ on:
 env:
   TREX_CFG: /home/runner/work/autotrex/autotrex/trex_cfg_ci.yaml
   TREX_CORE: /tmp/v3.02/
+  TREX_DURATION: 1
   PYTHONPATH: /tmp/v3.02/automation/trex_control_plane/interactive/trex/examples/stl:/tmp/v3.02/automation/trex_control_plane/interactive/
 jobs:
   test:

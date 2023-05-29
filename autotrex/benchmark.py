@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 import time
+import os
 from trex.stl.api import STLProfile, STLClient
 from autotrex.plot import plot_Gbps, plot_Mpps
 
 # FIXME: pkt -> eth
-
-# I don't know why but if pkt is small, then duration is ignored.
-DURATION = 30
-
-
 # e.g. pkg_size = 64 - 1518
+
 
 def single_run(c, profile, mult, pkt_size):
     start_at = time.time()
@@ -18,7 +15,9 @@ def single_run(c, profile, mult, pkt_size):
     c.remove_all_streams()
     c.add_streams(profile.get_streams(), ports=[0, 1])
 
-    c.start(ports=[0], mult=str(mult) + "%", duration=DURATION)
+    c.start(ports=[0],
+            mult=str(mult) + "%",
+            duration=int(os.getenv("TREX_DURATION", 30)))
     c.wait_on_traffic(ports=[0, 1])
     s = c.get_stats()
 
