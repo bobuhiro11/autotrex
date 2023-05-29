@@ -56,3 +56,29 @@ def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
     plt.plot(X, Y, marker=".", label="Actual", linewidth=3)
     plt.legend()
     plt.savefig("Mpps.png")
+
+
+if __name__ == '__main__':
+    pkt_sizes = [1518, 1280, 1024, 512, 256, 128, 64]
+
+    # Example Data.
+    Gbpss = [
+        9.78141696,
+        9.85044582,
+        8.60178022,
+        4.78739148,
+        2.43599206,
+        1.24389184,
+        0.61393779,
+    ]
+    Mppss = [
+        0.805452,
+        0.961957,
+        1.050022,
+        1.168796,
+        1.189449,
+        1.214738,
+        1.199097,
+    ]
+    plot_Gbps(pkt_sizes, Gbpss, 10*1e9)
+    plot_Mpps(pkt_sizes, Mppss, 10*1e9)

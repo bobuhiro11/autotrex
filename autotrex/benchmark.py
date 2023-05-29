@@ -6,7 +6,7 @@ from autotrex.plot import plot_Gbps, plot_Mpps
 # FIXME: pkt -> eth
 
 # I don't know why but if pkt is small, then duration is ignored.
-DURATION = 1
+DURATION = 30
 
 
 # e.g. pkg_size = 64 - 1518
