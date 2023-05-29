@@ -6,7 +6,9 @@ on:
     - cron:  '0 0 * * *'
   pull_request:
 env:
+  TREX_CFG: /home/runner/work/autotrex/autotrex/trex_cfg_ci.yaml
   TREX_CORE: /tmp/v3.02/
+  TREX_DURATION: 1
   PYTHONPATH: /tmp/v3.02/automation/trex_control_plane/interactive/trex/examples/stl:/tmp/v3.02/automation/trex_control_plane/interactive/
 jobs:
   test:
@@ -19,11 +21,17 @@ jobs:
           curl -kLO https://trex-tgn.cisco.com/trex/release/v3.02.tar.gz
           tar zxf ./v3.02.tar.gz -C /tmp
           python3 -m pip install -r ./requirements.txt
+      - name: setup dut
+        run: |
+          sudo ip link add dut-p0 type veth peer name dut-p1
+          sudo ip link set up dut-p0
+          sudo ip link set up dut-p1
       - name: run test
         run: |
           tox
           sudo -E nohup ./serve.sh > serve.log 2>&1 &
           sleep 10
           cat serve.log
-          ./benchmark.py
+          python3 -m autotrex.benchmark
           sudo pkill serve.sh
+          sudo pkill t-rex-64

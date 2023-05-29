@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 import time
-import matplotlib.pyplot as plt
+import os
 from trex.stl.api import STLProfile, STLClient
+from autotrex.plot import plot_Gbps, plot_Mpps
 
 # FIXME: pkt -> eth
-
-# I don't know why but if pkt is small, then duration is ignored.
-DURATION = 1
-
-
 # e.g. pkg_size = 64 - 1518
+
 
 def single_run(c, profile, mult, pkt_size):
     start_at = time.time()
@@ -18,7 +15,9 @@ def single_run(c, profile, mult, pkt_size):
     c.remove_all_streams()
     c.add_streams(profile.get_streams(), ports=[0, 1])
 
-    c.start(ports=[0], mult=str(mult) + "%", duration=DURATION)
+    c.start(ports=[0],
+            mult=str(mult) + "%",
+            duration=int(os.getenv("TREX_DURATION", 30)))
     c.wait_on_traffic(ports=[0, 1])
     s = c.get_stats()
 
@@ -68,53 +67,6 @@ def run(c, pkt_size):
 
     _, result = single_run(c, profile, ok, pkt_size)
     return result
-
-
-def plot_Gbps(packet_sizes, Gbpss, link_speed_bps):
-    X = packet_sizes
-    Y = Gbpss
-    Y_max = []
-
-    # Calc theoretical maximum throuput.
-    for pkt_size in packet_sizes:
-        # include preameble(8Bytes)+inter frame gap(12Bytes)
-        n_pkts = link_speed_bps / ((pkt_size + 8 + 12) * 8)
-        # convert unit from bytes to Gbits.
-        Y_max.append(n_pkts * pkt_size * 8 / 1e9)
-
-    plt.clf()
-    plt.style.use('seaborn-whitegrid')
-    plt.xlabel("Packet size (Bytes)")
-    plt.ylabel("Throuput (Gbps)")
-    plt.xticks(X)
-    plt.ticklabel_format(style='plain')
-    plt.plot(X, Y_max, marker=".", label="Theoretical", color="0.8")
-    plt.plot(X, Y, marker=".", label="Actual", linewidth=3)
-    plt.legend()
-    plt.savefig("Gbps.png")
-
-
-def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
-    X = packet_sizes
-    Y = Mppss
-    Y_max = []
-
-    # Calc theoretical maximum throuput.
-    for pkt_size in packet_sizes:
-        # include preameble(8Bytes)+inter frame gap(12Bytes)
-        n_pkts = link_speed_bps / ((pkt_size + 8 + 12) * 8)
-        Y_max.append(n_pkts / 1e6)
-
-    plt.clf()
-    plt.style.use('seaborn-whitegrid')
-    plt.xlabel("Packet size (Bytes)")
-    plt.ylabel("Packet rate (Mpps)")
-    plt.xticks(X)
-    plt.ticklabel_format(style='plain')
-    plt.plot(X, Y_max, marker=".", label="Theoretical", color="0.8")
-    plt.plot(X, Y, marker=".", label="Actual", linewidth=3)
-    plt.legend()
-    plt.savefig("Mpps.png")
 
 
 def main():
