@@ -6,10 +6,8 @@ on:
     - cron:  '0 0 * * *'
   pull_request:
 env:
-  TREX_CFG: /home/runner/work/autotrex/autotrex/trex_cfg_ci.yaml
-  TREX_CORE: /tmp/v3.02/
+  TREX_CFG: /home/runner/work/autotrex/autotrex/.github/workflows/trex_cfg_ci.yaml
   TREX_DURATION: 1
-  PYTHONPATH: /tmp/v3.02/automation/trex_control_plane/interactive/trex/examples/stl:/tmp/v3.02/automation/trex_control_plane/interactive/
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -29,9 +27,5 @@ jobs:
       - name: run test
         run: |
           tox
-          sudo -E nohup ./serve.sh > serve.log 2>&1 &
-          sleep 10
-          cat serve.log
-          python3 -m autotrex.benchmark
-          sudo pkill serve.sh
-          sudo pkill t-rex-64
+          ./simulate.sh
+          sudo -E ./run.sh
