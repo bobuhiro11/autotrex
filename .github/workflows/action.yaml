@@ -5,6 +5,9 @@ on:
   schedule:
     - cron:  '0 0 * * *'
   pull_request:
+env:
+  TREX_CORE: /tmp/v3.02/
+  PYTHONPATH: /tmp/v3.02/automation/trex_control_plane/interactive/trex/examples/stl:/tmp/v3.02/automation/trex_control_plane/interactive/
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -13,6 +16,14 @@ jobs:
       - name: install deps
         run: |
           python3 -m pip install tox
+          curl -kLO https://trex-tgn.cisco.com/trex/release/v3.02.tar.gz
+          tar zxf ./v3.02.tar.gz -C /tmp
+          python3 -m pip install -r ./requirements.txt
       - name: run test
         run: |
           tox
+          sudo -E nohup ./serve.sh > serve.log 2>&1 &
+          sleep 10
+          cat serve.log
+          ./benchmark.py
+          sudo pkill serve.sh
