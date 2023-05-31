@@ -86,6 +86,11 @@ def main():
     if int(os.getenv("ENCAP_OVERHEAD", 0)) > 0:
         pkt_sizes = [1518, 1280, 1024, 512, 256, 128]
 
+    # If trex sends encap packets, it cannot make
+    # 64 Bytes packets. So we simply skip it.
+    if "srv6" in str(os.getenv('TREX_INPUT_FILE')):
+        pkt_sizes = [1518, 1280, 1024, 512, 256, 128]
+
     results = {}
     try:
         for pkt_size in pkt_sizes:

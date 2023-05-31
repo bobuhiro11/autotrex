@@ -6,4 +6,4 @@ rm -f /tmp/a.pcap
 (cd $TREX_CORE; ./stl-sim -f $SCRIPTPATH/autotrex/$TREX_INPUT_FILE \
                -o /tmp/a.pcap)
 
-tcpdump -r /tmp/a.pcap -nnn -e
+tcpdump -r /tmp/a.pcap -nnn
