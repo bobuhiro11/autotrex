@@ -78,7 +78,13 @@ def main():
         raise Exception("link speed not matched for port 0 and port 1.")
 
     pkt_sizes = [1518, 1280, 1024, 512, 256, 128, 64]
-    # pkt_sizes = [1518, 1280]
+
+    # If the DUT performs Encap, for example, it
+    # will try to send a packet of 64-ENCAP_OVERHEAD
+    # Bytes. This is less than the Ethernet minimum
+    # size, so it is skipped.
+    if int(os.getenv("ENCAP_OVERHEAD", 0)) > 0:
+        pkt_sizes = [1518, 1280, 1024, 512, 256, 128]
 
     results = {}
     try:

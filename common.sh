@@ -15,3 +15,11 @@ export PYTHONPATH=$TREX_CORE/automation/trex_control_plane/interactive:$PYTHONPA
 
 # Get input file.
 export TREX_INPUT_FILE=${1:-tcp_1pkt_rand.py}
+
+# If the DUT performs **Encap**, please specify its overhead here in bytes.
+# If ENCAP_OVERHEAD=64, Trex will send a packet of size 1518-64=1454 Bytes.
+# For the calculation of throughput in bps, 1518 * pps is used.
+# This means the throughput for the Outer L2.
+#
+# NOTE: It is not necessary to set ENCAP_OVERHEAD if the DUT decapsulates.
+export ENCAP_OVERHEAD=${2:-0}

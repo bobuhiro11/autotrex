@@ -1,3 +1,4 @@
+import os
 from trex_stl_lib.api import \
     Ether, IP, TCP, STLStream, STLTXCont, STLPktBuilder, STLScVmRaw, \
     STLVmFlowVar, STLVmWrFlowVar, STLVmFixIpv4
@@ -11,6 +12,7 @@ class TCP_1PKT_254FLOW(object):
         payload_size -= 20  # TCP
         payload_size -= 20  # IPv4
         payload_size -= 14  # ETH
+        payload_size -= int(os.getenv("ENCAP_OVERHEAD", 0))
 
         vm = STLScVmRaw([
             STLVmFlowVar(name="ip_src",
