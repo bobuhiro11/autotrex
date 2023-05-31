@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import datetime
 import os
+import csv
 
 
 def get_prefix():
@@ -9,6 +10,8 @@ def get_prefix():
 
 
 def plot_Gbps(packet_sizes, Mppss, link_speed_bps):
+    prefix = get_prefix()
+
     X = packet_sizes
     Y = []
     Y_max = []
@@ -30,10 +33,15 @@ def plot_Gbps(packet_sizes, Mppss, link_speed_bps):
     Y = list(reversed(Y))
     Y_max = list(reversed(Y_max))
 
-    print("plot_Gbps:")
-    print("packet_size, actual, theoretical")
-    for i in range(len(packet_sizes)):
-        print(X[i], Y[i], Y_max[i], sep=", ")
+    with open(prefix + "Gbps.csv", 'w') as f:
+        w = csv.writer(f)
+        w.writerow(['Gbps'])
+        w.writerow(['packet_size', 'actual', 'theoretical'])
+        for i, _ in enumerate(packet_sizes):
+            w.writerow([X[i], Y[i], Y_max[i]])
+
+    with open(prefix + "Gbps.csv", 'r') as f:
+        print(f.read())
 
     plt.clf()
     plt.style.use('seaborn-whitegrid')
@@ -43,10 +51,12 @@ def plot_Gbps(packet_sizes, Mppss, link_speed_bps):
     plt.plot(X, Y_max, label="Theoretical", color="0.8")
     plt.bar(X, Y, label="Actual", width=0.5)
     plt.legend()
-    plt.savefig(get_prefix() + "Gbps.png")
+    plt.savefig(prefix + "Gbps.png")
 
 
 def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
+    prefix = get_prefix()
+
     X = packet_sizes
     Y = Mppss
     Y_max = []
@@ -61,10 +71,15 @@ def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
     Y = list(reversed(Y))
     Y_max = list(reversed(Y_max))
 
-    print("plot_Mpps:")
-    print("packet_size, actual, theoretical")
-    for i in range(len(packet_sizes)):
-        print(X[i], Y[i], Y_max[i], sep=", ")
+    with open(prefix + "Mpps.csv", 'w') as f:
+        w = csv.writer(f)
+        w.writerow(['Mpps'])
+        w.writerow(['packet_size', 'actual', 'theoretical'])
+        for i, _ in enumerate(packet_sizes):
+            w.writerow([X[i], Y[i], Y_max[i]])
+
+    with open(prefix + "Mpps.csv", 'r') as f:
+        print(f.read())
 
     plt.clf()
     plt.style.use('seaborn-whitegrid')
@@ -74,7 +89,7 @@ def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
     plt.plot(X, Y_max, label="Theoretical", color="0.8")
     plt.bar(X, Y, label="Actual", width=0.5)
     plt.legend()
-    plt.savefig(get_prefix() + "Mpps.png")
+    plt.savefig(prefix + "Mpps.png")
 
 
 if __name__ == '__main__':
