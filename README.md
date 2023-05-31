@@ -43,6 +43,15 @@ tar zxf ./v3.02.tar.gz -C /tmp
 ./run.sh
 ```
 
+There are several sample packet streams under the autotrex
+directory. They can be used as `./run.sh tcp_1pkt_254flow.py`
+for example. Note that if DUT (Device Under Test) is in charge
+of encap, you can use `. /run.sh tcp_1pkt_254flow.py 64`
+to specify the packet size overhead of Encap in bytes
+(64 bytes in this example).
+
+These options can also be used in `./simulate.sh` as well.
+
 ## Theoretical values
 
 ### Short Packet
