@@ -29,3 +29,4 @@ jobs:
           tox
           ./simulate.sh
           sudo -E ./run.sh
+          cat *.csv
