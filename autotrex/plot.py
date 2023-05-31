@@ -1,4 +1,11 @@
 import matplotlib.pyplot as plt
+import datetime
+import os
+
+
+def get_prefix():
+    now = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
+    return now + "-" + str(os.getenv('TREX_INPUT_FILE')) + "-"
 
 
 def plot_Gbps(packet_sizes, Mppss, link_speed_bps):
@@ -36,7 +43,7 @@ def plot_Gbps(packet_sizes, Mppss, link_speed_bps):
     plt.plot(X, Y_max, label="Theoretical", color="0.8")
     plt.bar(X, Y, label="Actual", width=0.5)
     plt.legend()
-    plt.savefig("Gbps.png")
+    plt.savefig(get_prefix() + "Gbps.png")
 
 
 def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
@@ -67,7 +74,7 @@ def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
     plt.plot(X, Y_max, label="Theoretical", color="0.8")
     plt.bar(X, Y, label="Actual", width=0.5)
     plt.legend()
-    plt.savefig("Mpps.png")
+    plt.savefig(get_prefix() + "Mpps.png")
 
 
 if __name__ == '__main__':
