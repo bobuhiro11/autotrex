@@ -1,10 +1,16 @@
 import matplotlib.pyplot as plt
 
 
-def plot_Gbps(packet_sizes, Gbpss, link_speed_bps):
+def plot_Gbps(packet_sizes, Mppss, link_speed_bps):
     X = packet_sizes
-    Y = Gbpss
+    Y = []
     Y_max = []
+
+    # Calc actual throuput.
+    for i, pkt_size in enumerate(packet_sizes):
+        Mbps = pkt_size * Mppss[i] * 8
+        Gbps = Mbps / 1e3
+        Y.append(Gbps)
 
     # Calc theoretical maximum throuput.
     for pkt_size in packet_sizes:
@@ -68,15 +74,6 @@ if __name__ == '__main__':
     pkt_sizes = [1518, 1280, 1024, 512, 256, 128, 64]
 
     # Example Data.
-    Gbpss = [
-        9.78141696,
-        9.85044582,
-        8.60178022,
-        4.78739148,
-        2.43599206,
-        1.24389184,
-        0.61393779,
-    ]
     Mppss = [
         0.805452,
         0.961957,
@@ -86,5 +83,5 @@ if __name__ == '__main__':
         1.214738,
         1.199097,
     ]
-    plot_Gbps(pkt_sizes, Gbpss, 10*1e9)
+    plot_Gbps(pkt_sizes, Mppss, 10*1e9)
     plot_Mpps(pkt_sizes, Mppss, 10*1e9)

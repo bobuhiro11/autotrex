@@ -24,7 +24,6 @@ def single_run(c, profile, mult, pkt_size):
     total = s["total"]
     tx_pkts = total["opackets"]
     rx_pkts = total["ipackets"]
-    bps = total["tx_bps"]
     pps = total["tx_pps"]
 
     lossrate = max(0.0, (1 - rx_pkts / tx_pkts)) * 100.0  # percent
@@ -37,7 +36,6 @@ def single_run(c, profile, mult, pkt_size):
         "pkt_size": pkt_size,
         "mult_pct": mult,
         "lossrate_pct": lossrate,
-        "bps": bps,
         "pps": pps,
         "tx_pkts": tx_pkts,
         "rx_pkts": rx_pkts,
@@ -90,16 +88,14 @@ def main():
     finally:
         c.disconnect()
 
-    Gbpss = []
     Mppss = []
-    print("pkt_size", "bps", "pps")
+    print("pkt_size", "pps")
     for pkt_size, result in results.items():
-        print(pkt_size, result['bps'], result['pps'])
+        print(pkt_size, result['pps'])
         # Not use 2^N. use 10^N in networking.
-        Gbpss.append(result['bps'] / 1e9)
         Mppss.append(result['pps'] / 1e6)
 
-    plot_Gbps(pkt_sizes, Gbpss, link_speed_bps)
+    plot_Gbps(pkt_sizes, Mppss, link_speed_bps)
     plot_Mpps(pkt_sizes, Mppss, link_speed_bps)
 
 
