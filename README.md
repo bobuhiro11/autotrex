@@ -48,9 +48,21 @@ directory. They can be used as `./run.sh tcp_1pkt_254flow.py`
 for example. Note that if DUT (Device Under Test) is in charge
 of encap, you can use `. /run.sh tcp_1pkt_254flow.py 64`
 to specify the packet size overhead of Encap in bytes
-(64 bytes in this example).
+(64 bytes in this example). These options can also be used
+in `./simulate.sh` as well.
 
-These options can also be used in `./simulate.sh` as well.
+### Configuration
+
+Please include port information in `trex_cfg.yaml`. If a
+single port is responsible for tx/rx (i.e., autotrex can
+only connect to one port), one of the ports should be the
+dummy interface.
+
+```
+# e.g.
+# In trex_cfg.yaml:
+interfaces: ['07:00.0', 'dummy']
+```
 
 ## Theoretical values
 
