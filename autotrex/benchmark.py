@@ -2,7 +2,7 @@
 import time
 import os
 from trex.stl.api import STLProfile, STLClient
-from autotrex.plot import plot_Gbps, plot_Mpps
+from autotrex.plot import plot_L1Gbps, plot_L2Gbps, plot_Mpps
 
 # FIXME: pkt -> eth
 # e.g. pkg_size = 64 - 1518
@@ -106,7 +106,8 @@ def main():
         # Not use 2^N. use 10^N in networking.
         Mppss.append(result['pps'] / 1e6)
 
-    plot_Gbps(pkt_sizes, Mppss, link_speed_bps)
+    plot_L1Gbps(pkt_sizes, Mppss, link_speed_bps)
+    plot_L2Gbps(pkt_sizes, Mppss, link_speed_bps)
     plot_Mpps(pkt_sizes, Mppss, link_speed_bps)
 
 
