@@ -49,7 +49,8 @@ for example. Note that if DUT (Device Under Test) is in charge
 of encap, you can use `. /run.sh tcp_1pkt_254flow.py 64`
 to specify the packet size overhead of Encap in bytes
 (64 bytes in this example). These options can also be used
-in `./simulate.sh` as well.
+in `./simulate.sh` as well. Note that autotrex sends a maximum
+L2 frame size of 9216, so set the MTU to 9198 or higher.
 
 ### Configuration
 
