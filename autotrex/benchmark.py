@@ -77,19 +77,19 @@ def main():
     if link_speed_bps != c.ports[1].get_speed_bps():
         raise Exception("link speed not matched for port 0 and port 1.")
 
-    pkt_sizes = [1518, 1280, 1024, 512, 256, 128, 64]
+    pkt_sizes = [9216, 8192, 4096, 2048, 1518, 1280, 1024, 512, 256, 128, 64]
 
     # If the DUT performs Encap, for example, it
     # will try to send a packet of 64-ENCAP_OVERHEAD
     # Bytes. This is less than the Ethernet minimum
     # size, so it is skipped.
     if int(os.getenv("ENCAP_OVERHEAD", 0)) > 0:
-        pkt_sizes = [1518, 1280, 1024, 512, 256, 128]
+        pkt_sizes = [9216, 8192, 4096, 2048, 1518, 1280, 1024, 512, 256, 128]
 
     # If trex sends encap packets, it cannot make
     # 64 Bytes packets. So we simply skip it.
     if "srv6" in str(os.getenv('TREX_INPUT_FILE')):
-        pkt_sizes = [1518, 1280, 1024, 512, 256, 128]
+        pkt_sizes = [9216, 8192, 4096, 2048, 1518, 1280, 1024, 512, 256, 128]
 
     results = {}
     try:

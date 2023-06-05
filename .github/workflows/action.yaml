@@ -24,6 +24,8 @@ jobs:
           sudo ip link add dut-p0 type veth peer name dut-p1
           sudo ip link set up dut-p0
           sudo ip link set up dut-p1
+          sudo ip link set mtu 9198 dut-p0
+          sudo ip link set mtu 9198 dut-p1
       - name: run test
         run: |
           tox
