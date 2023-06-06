@@ -14,6 +14,9 @@ class TCP_1PKT_RAND(object):
         payload_size -= 14  # ETH
         payload_size -= int(os.getenv("ENCAP_OVERHEAD", 0))
 
+        if payload_size <= 0:
+            raise Exception("packet size is too small", pkt_size)
+
         vm = STLScVmRaw([
             STLVmFlowVar(name="ip_src",
                          min_value="16.0.0.0",

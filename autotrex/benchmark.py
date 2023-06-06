@@ -43,13 +43,17 @@ def single_run(c, profile, mult, pkt_size):
     }
     print(result)
 
-    return success, result
+    return success, pps
 
 
 def run(c, pkt_size):
-    profile = STLProfile.load_py(
-            os.path.join('./autotrex', str(os.getenv('TREX_INPUT_FILE'))),
-            pkt_size=pkt_size)
+    try:
+        profile = STLProfile.load_py(
+                os.path.join('./autotrex', str(os.getenv('TREX_INPUT_FILE'))),
+                pkt_size=pkt_size)
+    except Exception as e:
+        print(e)
+        return 0.0
 
     ok = 1
     ng = 101
@@ -65,8 +69,8 @@ def run(c, pkt_size):
         else:
             ng = mid
 
-    _, result = single_run(c, profile, ok, pkt_size)
-    return result
+    _, pps = single_run(c, profile, ok, pkt_size)
+    return pps
 
 
 def main():
@@ -79,32 +83,17 @@ def main():
 
     pkt_sizes = [9216, 8192, 4096, 2048, 1518, 1280, 1024, 512, 256, 128, 64]
 
-    # If the DUT performs Encap, for example, it
-    # will try to send a packet of 64-ENCAP_OVERHEAD
-    # Bytes. This is less than the Ethernet minimum
-    # size, so it is skipped.
-    if int(os.getenv("ENCAP_OVERHEAD", 0)) > 0:
-        pkt_sizes = [9216, 8192, 4096, 2048, 1518, 1280, 1024, 512, 256, 128]
-
-    # If trex sends encap packets, it cannot make
-    # 64 Bytes packets. So we simply skip it.
-    if "srv6" in str(os.getenv('TREX_INPUT_FILE')):
-        pkt_sizes = [9216, 8192, 4096, 2048, 1518, 1280, 1024, 512, 256, 128]
-
     results = {}
-    try:
-        for pkt_size in pkt_sizes:
-            results[pkt_size] = run(c, pkt_size)
-
-    finally:
-        c.disconnect()
+    for pkt_size in pkt_sizes:
+        results[pkt_size] = run(c, pkt_size)
+    c.disconnect()
 
     Mppss = []
     print("pkt_size", "pps")
-    for pkt_size, result in results.items():
-        print(pkt_size, result['pps'])
+    for pkt_size, pps in results.items():
+        print(pkt_size, pps)
         # Not use 2^N. use 10^N in networking.
-        Mppss.append(result['pps'] / 1e6)
+        Mppss.append(pps / 1e6)
 
     plot_L1Gbps(pkt_sizes, Mppss, link_speed_bps)
     plot_L2Gbps(pkt_sizes, Mppss, link_speed_bps)

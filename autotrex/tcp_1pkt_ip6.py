@@ -13,6 +13,9 @@ class TCP_1PKT_IP6(object):
         payload_size -= 14  # ETH
         payload_size -= int(os.getenv("ENCAP_OVERHEAD", 0))
 
+        if payload_size <= 0:
+            raise Exception("packet size is too small", pkt_size)
+
         return STLStream(
             packet=STLPktBuilder(
                 pkt=Ether()/IPv6(src="aa::1", dst="bb::1") /
