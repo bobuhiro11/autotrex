@@ -55,7 +55,7 @@ def plot_L1Gbps(packet_sizes, Mppss, link_speed_bps):
         if y != 0.0:
             continue
         plt.text(x, y, 'N/A', fontsize=12, ha="center")
-    plt.legend()
+    plt.legend(frameon=True, loc='center right')
     plt.savefig(prefix + "L1Gbps.png")
 
 
@@ -104,7 +104,7 @@ def plot_L2Gbps(packet_sizes, Mppss, link_speed_bps):
         if y != 0.0:
             continue
         plt.text(x, y, 'N/A', fontsize=12, ha="center")
-    plt.legend()
+    plt.legend(frameon=True, loc='center right')
     plt.savefig(prefix + "L2Gbps.png")
 
 
@@ -146,7 +146,7 @@ def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
         if y != 0.0:
             continue
         plt.text(x, y, 'N/A', fontsize=12, ha="center")
-    plt.legend()
+    plt.legend(frameon=True, loc='center right')
     plt.savefig(prefix + "Mpps.png")
 
 
