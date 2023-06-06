@@ -51,6 +51,10 @@ def plot_L1Gbps(packet_sizes, Mppss, link_speed_bps):
     plt.ticklabel_format(style='plain')
     plt.plot(X, Y_max, label="Theoretical", color="0.8")
     plt.bar(X, Y, label="Actual", width=0.5)
+    for x, y in zip(X, Y):
+        if y != 0.0:
+            continue
+        plt.text(x, y, 'N/A', fontsize=12, ha="center")
     plt.legend()
     plt.savefig(prefix + "L1Gbps.png")
 
@@ -96,6 +100,10 @@ def plot_L2Gbps(packet_sizes, Mppss, link_speed_bps):
     plt.ticklabel_format(style='plain')
     plt.plot(X, Y_max, label="Theoretical", color="0.8")
     plt.bar(X, Y, label="Actual", width=0.5)
+    for x, y in zip(X, Y):
+        if y != 0.0:
+            continue
+        plt.text(x, y, 'N/A', fontsize=12, ha="center")
     plt.legend()
     plt.savefig(prefix + "L2Gbps.png")
 
@@ -134,6 +142,10 @@ def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
     plt.ticklabel_format(style='plain')
     plt.plot(X, Y_max, label="Theoretical", color="0.8")
     plt.bar(X, Y, label="Actual", width=0.5)
+    for x, y in zip(X, Y):
+        if y != 0.0:
+            continue
+        plt.text(x, y, 'N/A', fontsize=12, ha="center")
     plt.legend()
     plt.savefig(prefix + "Mpps.png")
 
@@ -153,7 +165,7 @@ if __name__ == '__main__':
         1.168796,
         1.189449,
         1.214738,
-        1.199097,
+        0.0,
     ]
     plot_L1Gbps(pkt_sizes, Mppss, 10*1e9)
     plot_L2Gbps(pkt_sizes, Mppss, 10*1e9)
