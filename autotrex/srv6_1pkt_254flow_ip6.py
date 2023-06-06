@@ -1,17 +1,17 @@
 import os
 from trex_stl_lib.api import \
-    Ether, IP, TCP, STLStream, STLTXCont, STLPktBuilder, \
+    Ether, TCP, STLStream, STLTXCont, STLPktBuilder, \
     IPv6, IPv6ExtHdrSegmentRouting
 
 
-class TCP_1PKT_254FLOW(object):
+class SRV6_1PKT_254FLOW_IP6(object):
 
     def create_stream(self, pkt_size, src):
         payload_size = pkt_size
         payload_size -= 4  # FCS (outer)
 
         payload_size -= 20  # TCP (inner)
-        payload_size -= 20  # IPv4 (inner)
+        payload_size -= 40  # IPv6 (inner)
 
         payload_size -= 24  # SRH (outer)
         payload_size -= 40  # IPv6 (outer)
@@ -26,13 +26,13 @@ class TCP_1PKT_254FLOW(object):
             packet=STLPktBuilder(
                 pkt=Ether()/IPv6(src=src, dst="bb::1") /
                 IPv6ExtHdrSegmentRouting(addresses=["bb::1"]) /
-                IP(src="16.0.0.1", dst="48.0.0.1") /
+                IPv6(src="dd::1", dst="ee::1") /
                 TCP(dport=12, sport=13)/(payload_size*'x')
             ),
             mode=STLTXCont())
 
-    # e.g. pkt_size = 128 - 1518
-    def get_streams(self, pkt_size=128, **kwargs):
+    # e.g. pkt_size = 256 - 1518
+    def get_streams(self, pkt_size=256, **kwargs):
         streams = []
         for i in range(254):
             src = "aa::"+hex(i+1).replace('0x', '')
@@ -43,4 +43,4 @@ class TCP_1PKT_254FLOW(object):
 
 # dynamic load - used for trex console or simulator
 def register():
-    return TCP_1PKT_254FLOW()
+    return SRV6_1PKT_254FLOW_IP6()
