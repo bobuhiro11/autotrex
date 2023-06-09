@@ -3,6 +3,8 @@ import datetime
 import os
 import csv
 
+THEME = "grayscale"
+
 
 def get_prefix():
     now = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
@@ -45,7 +47,7 @@ def plot_L1Gbps(packet_sizes, Mppss, link_speed_bps):
         print(f.read())
 
     plt.clf()
-    plt.style.use('seaborn-whitegrid')
+    plt.style.use(THEME)
     plt.xlabel("Packet size (Bytes)")
     plt.ylabel("L1 Throuput (Gbps)")
     plt.ticklabel_format(style='plain')
@@ -94,7 +96,7 @@ def plot_L2Gbps(packet_sizes, Mppss, link_speed_bps):
         print(f.read())
 
     plt.clf()
-    plt.style.use('seaborn-whitegrid')
+    plt.style.use(THEME)
     plt.xlabel("Packet size (Bytes)")
     plt.ylabel("L2 Throuput (Gbps)")
     plt.ticklabel_format(style='plain')
@@ -136,7 +138,7 @@ def plot_Mpps(packet_sizes, Mppss, link_speed_bps):
         print(f.read())
 
     plt.clf()
-    plt.style.use('seaborn-whitegrid')
+    plt.style.use(THEME)
     plt.xlabel("Packet size (Bytes)")
     plt.ylabel("Packet rate (Mpps)")
     plt.ticklabel_format(style='plain')
